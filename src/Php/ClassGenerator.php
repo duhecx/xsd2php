@@ -30,11 +30,53 @@ class ClassGenerator
             }
         }
 
+        $this->createToArrayMethod($class);
+
         if (count($type->getProperties()) === 1 && $type->hasProperty('__value')) {
             return false;
         }
 
         return true;
+    }
+
+    private function createToArrayMethod(Generator\ClassGenerator $class)
+    {
+        $method = new MethodGenerator("toArray");
+        $methodBody = <<<HERE
+\$handleItem = function(\$item){
+    if(is_object(\$item)){
+        if(method_exists(\$item, "toArray")){
+            return \$item->toArray();
+        } elseif(\$item instanceOf \DateTime){
+            return \$item->format('Y-m-d\TH:i:s\Z');
+        }
+        return (string)\$item;
+    }
+
+    return \$item;
+};
+
+\$array = [];
+\$methods = get_class_methods(\$this);
+foreach (\$methods as \$method){
+    if(substr(\$method, 0, 3) == "get"){
+        \$var = \$this->{\$method}();
+        \$key = substr(\$method, 3);
+        if(is_array(\$var)){
+            \$array[\$key] = [];
+            foreach (\$var as \$k => \$itm){
+                \$array[\$key][\$k] = \$handleItem(\$itm);
+            }
+        } else {
+            \$array[\$key] = \$handleItem(\$var);
+        }
+    }
+}
+
+return \$array;
+HERE;
+        $method->setBody($methodBody);
+        $class->addMethodFromGenerator($method);
     }
 
     private function isNativeType(PHPClass $class)

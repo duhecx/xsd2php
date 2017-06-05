@@ -37,7 +37,12 @@ class ShortNamingStrategy implements NamingStrategy
 
     public function getPropertyName($item)
     {
-        return Inflector::camelize(str_replace(".", " ", $item->getName()));
+        if($item instanceof Attribute){
+            return str_replace(".", " ", $item->getName()) . "AttrName";
+        } elseif ($item instanceof Element){
+            return str_replace(".", " ", $item->getName()) . "ElName";
+        }
+        return str_replace(".", " ", $item->getName()) . "PropName";
     }
 
     public function getItemName(Item $item)

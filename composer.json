@@ -1,10 +1,10 @@
 {
-  "name": "goetas-webservices/xsd2php",
+  "name": "formaldehid/xsd2php",
   "description": "Convert XSD  (XML Schema) definitions into PHP classes and JMS metadata",
   "type": "library",
   "authors": [
     {
-      "name": "Asmir Mustafic"
+      "name": "Marko Šabec"
     }
   ],
   "keywords": [

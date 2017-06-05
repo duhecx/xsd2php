@@ -42,7 +42,12 @@ class LongNamingStrategy implements NamingStrategy
 
     public function getPropertyName($item)
     {
-        return Inflector::camelize(str_replace(".", " ", $item->getName()));
+        if($item instanceof Attribute){
+            return str_replace(".", " ", $item->getName()) . "AttributeName";
+        } elseif ($item instanceof Element){
+            return str_replace(".", " ", $item->getName()) . "ElementName";
+        }
+        return str_replace(".", " ", $item->getName()) . "PropertyName";
     }
 
     private function classify($name)
