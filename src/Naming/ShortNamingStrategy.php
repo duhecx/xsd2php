@@ -2,6 +2,8 @@
 namespace GoetasWebservices\Xsd\XsdToPhp\Naming;
 
 use Doctrine\Common\Inflector\Inflector;
+use GoetasWebservices\XML\XSDReader\Schema\Attribute\Attribute;
+use GoetasWebservices\XML\XSDReader\Schema\Element\Element;
 use GoetasWebservices\XML\XSDReader\Schema\Item;
 use GoetasWebservices\XML\XSDReader\Schema\Type\Type;
 
